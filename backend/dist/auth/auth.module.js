@@ -11,21 +11,22 @@ import { UsersModule } from '../users/users.module.js';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy.js';
+import { JwtAuthGuard } from './jwt-auth.guard.js';
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     Module({
         imports: [
             UsersModule,
-            PassportModule,
+            PassportModule.register({ defaultStrategy: 'jwt' }),
             JwtModule.register({
                 secret: process.env.JWT_SECRET || 'super-secret-key-for-dev',
                 signOptions: { expiresIn: '1h' },
             }),
         ],
-        providers: [AuthService, JwtStrategy],
+        providers: [AuthService, JwtStrategy, JwtAuthGuard],
         controllers: [AuthController],
-        exports: [AuthService],
+        exports: [AuthService, PassportModule, JwtModule, JwtAuthGuard],
     })
 ], AuthModule);
 export { AuthModule };
