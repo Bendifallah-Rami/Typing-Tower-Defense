@@ -1,6 +1,7 @@
-﻿import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+import './LoginScreen.css';
 
 export default function LoginScreen() {
   const navigate = useNavigate();
@@ -24,67 +25,59 @@ export default function LoginScreen() {
     }
   };
 
-  const inputCls = `w-full px-4 py-3 rounded-xl bg-bg-input border border-border
-    text-text-primary placeholder-text-muted outline-none
-    focus:border-border-accent focus:ring-2 focus:ring-accent/10
-    transition-all font-mono text-sm`;
-
   return (
-    <div className="w-full h-full flex items-center justify-center dashed-grid">
-      <div className="fixed top-[-80px] right-[-60px] w-[360px] h-[360px] rounded-full bg-accent/5 blur-[130px] pointer-events-none" />
+    <div className="login-container dashed-grid">
+      <div className="login-bg-glow" />
 
-      {/* Form card — 400px is the sweet spot for login forms */}
-      <div className="w-full max-w-[420px] mx-6 animate-scale-in">
+      {/* Form card */}
+      <div className="login-content animate-scale-in">
 
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-1.5 text-text-secondary hover:text-accent transition-colors mb-7 cursor-pointer group"
+          className="login-back-btn group"
         >
-          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-          <span className="text-sm font-medium">Back</span>
+          <ChevronLeft />
+          <span className="login-back-text">Back</span>
         </button>
 
-        <div className="glass-elevated rounded-2xl p-8">
+        <div className="login-card glass-elevated">
           {/* Header */}
-          <div className="mb-7">
-            <h1
-              className="text-2xl font-bold text-text-primary mb-1"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
+          <div className="login-header">
+            <h1 className="login-title">
               Welcome Back
             </h1>
-            <p className="text-text-secondary text-sm">Sign in to save your scores</p>
+            <p className="login-subtitle">Sign in to save your scores</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
-              <label className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-text-muted mb-2">
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="login-field-group">
+              <label className="login-label">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={inputCls}
+                className="login-input"
                 placeholder="your@email.com"
               />
             </div>
 
-            <div>
-              <label className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-text-muted mb-2">
+            <div className="login-field-group">
+              <label className="login-label">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={inputCls}
+                className="login-input"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="px-4 py-2.5 rounded-xl bg-danger-dim border border-danger/20 text-danger text-sm">
+              <div className="login-error">
                 {error}
               </div>
             )}
@@ -92,19 +85,17 @@ export default function LoginScreen() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-accent text-accent-text font-bold rounded-xl text-sm
-                         hover:bg-accent-hover transition-all duration-200
-                         disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer mt-1"
+              className="login-btn-submit"
             >
               {loading ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-text-secondary">
+          <p className="login-footer">
             No account?{' '}
             <button
               onClick={() => navigate('/register')}
-              className="text-accent hover:text-accent-hover transition-colors cursor-pointer font-semibold"
+              className="login-link"
             >
               Create one
             </button>

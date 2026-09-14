@@ -1,8 +1,9 @@
-﻿import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   ChevronLeft, BarChart2, Gamepad2, Trophy, Zap,
   Target, Clock, Globe, TrendingUp,
 } from 'lucide-react';
+import './DashboardScreen.css';
 
 const MOCK_STATS = {
   totalGames: 42,
@@ -27,39 +28,36 @@ export default function DashboardScreen() {
   const totalMinutes = Math.floor((stats.totalPlayTime % 3600) / 60);
 
   return (
-    <div className="w-full h-full overflow-y-auto dashed-grid">
-      <div className="fixed bottom-[-80px] right-[-60px] w-[360px] h-[360px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
+    <div className="dashboard-container dashed-grid">
+      <div className="dashboard-bg-glow" />
 
-      {/* Centered container — 860px max is comfortable for a 4-col stat grid */}
-      <div className="w-full max-w-[860px] mx-auto px-6 py-10 animate-slide-up">
+      {/* Centered container */}
+      <div className="dashboard-content animate-slide-up">
 
         {/* Back */}
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-1.5 text-text-secondary hover:text-accent transition-colors mb-10 cursor-pointer group"
+          className="dashboard-back-btn group"
         >
-          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-          <span className="text-sm font-medium">Back</span>
+          <ChevronLeft />
+          <span className="dashboard-back-text">Back</span>
         </button>
 
         {/* Page header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-1.5">
-            <BarChart2 className="w-3.5 h-3.5 text-accent" />
-            <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-accent">
+        <div className="dashboard-header">
+          <div className="dashboard-subtitle">
+            <BarChart2 />
+            <span className="dashboard-subtitle-text">
               Personal Stats
             </span>
           </div>
-          <h1
-            className="text-4xl font-extrabold text-text-primary"
-            style={{ fontFamily: "'Syne', sans-serif" }}
-          >
+          <h1 className="dashboard-title">
             Dashboard
           </h1>
         </div>
 
         {/* Hero stat cards — 4 columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        <div className="dashboard-hero-grid">
           {[
             { value: stats.totalGames, label: 'Games Played', Icon: Gamepad2, accent: false },
             { value: stats.bestScore.toLocaleString(), label: 'Best Score', Icon: Trophy, accent: true },
@@ -68,25 +66,27 @@ export default function DashboardScreen() {
           ].map(({ value, label, Icon, accent }) => (
             <div
               key={label}
-              className={`glass rounded-xl p-5 flex flex-col gap-3 ${accent ? 'glow-accent' : ''}`}
+              className={`dashboard-card glass ${accent ? 'glow-accent' : ''}`}
             >
-              <Icon className={`w-4 h-4 ${accent ? 'text-accent' : 'text-text-muted'}`} />
+              <div className="dashboard-card-icon-container">
+                <Icon className={`dashboard-card-icon ${accent ? 'is-accent' : 'is-muted'}`} />
+              </div>
               <div>
                 <div
-                  className={`text-2xl font-black font-mono ${accent ? 'text-accent' : 'text-text-primary'}`}
+                  className={`dashboard-card-value ${accent ? 'is-accent' : 'is-primary'}`}
                 >
                   {value}
                 </div>
-                <div className="text-xs text-text-secondary mt-0.5">{label}</div>
+                <div className="dashboard-card-label">{label}</div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Secondary stat cards — 3 columns */}
-        <div className="grid grid-cols-3 gap-4 mb-5">
+        <div className="dashboard-secondary-grid">
           {[
-            { Icon: Clock, label: 'Play Time', value: `${totalHours}h ${totalMinutes}m` },
+            { Icon: Clock, label: 'Play Time', value: `${totalHours}h ${totalMinutes}m`, accent: false },
             { Icon: Globe, label: 'Global Rank', value: `#${stats.globalRank}`, accent: true },
             {
               Icon: TrendingUp,
@@ -94,16 +94,17 @@ export default function DashboardScreen() {
               value: Math.round(
                 stats.recentGames.reduce((s, g) => s + g.score, 0) / stats.recentGames.length
               ).toLocaleString(),
+              accent: false
             },
           ].map(({ Icon, label, value, accent }) => (
-            <div key={label} className="glass rounded-xl p-5">
-              <div className="flex items-center gap-2 mb-2">
-                <Icon className="w-3.5 h-3.5 text-text-muted" />
-                <span className="text-[10px] font-semibold tracking-[0.12em] uppercase text-text-muted">
+            <div key={label} className="dashboard-secondary-card glass">
+              <div className="dashboard-secondary-card-header">
+                <Icon className="dashboard-secondary-icon" />
+                <span className="dashboard-secondary-label">
                   {label}
                 </span>
               </div>
-              <div className={`text-xl font-bold font-mono ${accent ? 'text-accent' : 'text-text-primary'}`}>
+              <div className={`dashboard-secondary-value ${accent ? 'is-accent' : 'is-primary'}`}>
                 {value}
               </div>
             </div>
@@ -111,19 +112,19 @@ export default function DashboardScreen() {
         </div>
 
         {/* Recent games table */}
-        <div className="glass rounded-xl overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-border">
-            <h3 className="text-xs font-semibold tracking-[0.12em] uppercase text-text-muted">
+        <div className="dashboard-table-container glass">
+          <div className="dashboard-table-header">
+            <h3 className="dashboard-table-title">
               Recent Games
             </h3>
           </div>
 
           {/* Column headers */}
-          <div className="grid grid-cols-[1fr_72px_72px_60px_68px] gap-3 px-5 py-2.5 border-b border-border/40">
+          <div className="dashboard-table-cols">
             {['Session', 'WPM', 'Acc', 'Wave', 'Time'].map((h, i) => (
               <span
                 key={h}
-                className={`text-[10px] font-semibold tracking-[0.1em] uppercase text-text-muted ${i > 0 ? 'text-right' : ''}`}
+                className={`dashboard-table-col-header ${i > 0 ? 'align-right' : ''}`}
               >
                 {h}
               </span>
@@ -133,19 +134,18 @@ export default function DashboardScreen() {
           {stats.recentGames.map((game) => (
             <div
               key={game.id}
-              className="grid grid-cols-[1fr_72px_72px_60px_68px] gap-3 px-5 py-3.5 items-center
-                         border-b border-border/25 last:border-0 hover:bg-white/[0.02] transition-colors"
+              className="dashboard-table-row"
             >
               <div>
-                <div className="text-sm font-semibold text-text-primary">
+                <div className="dashboard-row-score">
                   {game.score.toLocaleString()} pts
                 </div>
-                <div className="text-xs text-text-muted mt-0.5">{game.playedAt}</div>
+                <div className="dashboard-row-date">{game.playedAt}</div>
               </div>
-              <div className="text-right font-mono text-sm text-text-secondary">{game.maxWpm}</div>
-              <div className="text-right font-mono text-sm text-text-secondary">{game.accuracy}%</div>
-              <div className="text-right font-mono text-sm text-text-secondary">{game.wavesReached}</div>
-              <div className="text-right font-mono text-sm text-text-secondary">
+              <div className="dashboard-row-cell">{game.maxWpm}</div>
+              <div className="dashboard-row-cell">{game.accuracy}%</div>
+              <div className="dashboard-row-cell">{game.wavesReached}</div>
+              <div className="dashboard-row-cell">
                 {Math.floor(game.duration / 60)}:{String(game.duration % 60).padStart(2, '0')}
               </div>
             </div>
@@ -153,12 +153,10 @@ export default function DashboardScreen() {
         </div>
 
         {/* CTA */}
-        <div className="mt-8 flex justify-center">
+        <div className="dashboard-cta-container">
           <button
             onClick={() => navigate('/play')}
-            className="flex items-center gap-2.5 px-8 py-3 bg-accent text-accent-text font-bold rounded-full
-                       hover:bg-accent-hover transition-all duration-300 hover:scale-[1.03]
-                       shadow-[0_0_28px_rgba(194,247,81,0.22)] cursor-pointer"
+            className="dashboard-btn-play"
           >
             Play Again
           </button>

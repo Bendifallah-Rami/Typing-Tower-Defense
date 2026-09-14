@@ -1,6 +1,4 @@
-@import "tailwindcss";
-
-@theme {
+:root {
   --color-bg-primary: #080810;
   --color-bg-secondary: #0d0d1a;
   --color-bg-surface: rgba(15, 17, 35, 0.65);
@@ -30,12 +28,6 @@
   --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
   --font-display: "Syne", "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-  --animate-fade-in: fade-in 0.5s ease-out;
-  --animate-slide-up: slide-up 0.5s ease-out;
-  --animate-slide-down: slide-down 0.3s ease-out;
-  --animate-scale-in: scale-in 0.3s ease-out;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
 }
 
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -44,6 +36,13 @@
 @keyframes scale-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(194,247,81,0.08); } 50% { box-shadow: 0 0 40px rgba(194,247,81,0.22); } }
 @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+.animate-fade-in { animation: fade-in 0.5s ease-out; }
+.animate-slide-up { animation: slide-up 0.5s ease-out; }
+.animate-slide-down { animation: slide-down 0.3s ease-out; }
+.animate-scale-in { animation: scale-in 0.3s ease-out; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-float { animation: float 6s ease-in-out infinite; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 

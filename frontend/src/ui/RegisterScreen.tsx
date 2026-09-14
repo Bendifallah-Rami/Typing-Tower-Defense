@@ -1,6 +1,7 @@
-﻿import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+import './RegisterScreen.css';
 
 export default function RegisterScreen() {
   const navigate = useNavigate();
@@ -28,11 +29,6 @@ export default function RegisterScreen() {
     }
   };
 
-  const inputCls = `w-full px-4 py-3 rounded-xl bg-bg-input border border-border
-    text-text-primary placeholder-text-muted outline-none
-    focus:border-border-accent focus:ring-2 focus:ring-accent/10
-    transition-all font-mono text-sm`;
-
   const fields = [
     { label: 'Username', value: username, setter: setUsername, type: 'text', placeholder: 'speedtyper42' },
     { label: 'Email', value: email, setter: setEmail, type: 'email', placeholder: 'your@email.com' },
@@ -41,48 +37,45 @@ export default function RegisterScreen() {
   ] as const;
 
   return (
-    <div className="w-full h-full flex items-center justify-center dashed-grid overflow-y-auto">
-      <div className="fixed top-[-80px] left-[-60px] w-[300px] h-[300px] rounded-full bg-info/4 blur-[110px] pointer-events-none" />
+    <div className="register-container dashed-grid">
+      <div className="register-bg-glow" />
 
-      <div className="w-full max-w-[420px] mx-6 my-8 animate-scale-in">
+      <div className="register-content animate-scale-in">
 
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-1.5 text-text-secondary hover:text-accent transition-colors mb-7 cursor-pointer group"
+          className="register-back-btn group"
         >
-          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-          <span className="text-sm font-medium">Back</span>
+          <ChevronLeft />
+          <span className="register-back-text">Back</span>
         </button>
 
-        <div className="glass-elevated rounded-2xl p-8">
-          <div className="mb-7">
-            <h1
-              className="text-2xl font-bold text-text-primary mb-1"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
+        <div className="register-card glass-elevated">
+          <div className="register-header">
+            <h1 className="register-title">
               Create Account
             </h1>
-            <p className="text-text-secondary text-sm">Join the global leaderboard</p>
+            <p className="register-subtitle">Join the global leaderboard</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="register-form">
             {fields.map(({ label, value, setter, type, placeholder }) => (
-              <div key={label}>
-                <label className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-text-muted mb-2">
+              <div key={label} className="register-field-group">
+                <label className="register-label">
                   {label}
                 </label>
                 <input
                   type={type}
                   value={value}
                   onChange={(e) => setter(e.target.value)}
-                  className={inputCls}
+                  className="register-input"
                   placeholder={placeholder}
                 />
               </div>
             ))}
 
             {error && (
-              <div className="px-4 py-2.5 rounded-xl bg-danger-dim border border-danger/20 text-danger text-sm">
+              <div className="register-error">
                 {error}
               </div>
             )}
@@ -90,19 +83,17 @@ export default function RegisterScreen() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-accent text-accent-text font-bold rounded-xl text-sm
-                         hover:bg-accent-hover transition-all duration-200
-                         disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer mt-1"
+              className="register-btn-submit"
             >
               {loading ? 'Creating account…' : 'Create Account'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-text-secondary">
+          <p className="register-footer">
             Have an account?{' '}
             <button
               onClick={() => navigate('/login')}
-              className="text-accent hover:text-accent-hover transition-colors cursor-pointer font-semibold"
+              className="register-link"
             >
               Sign in
             </button>

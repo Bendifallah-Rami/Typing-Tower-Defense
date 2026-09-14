@@ -1,0 +1,122 @@
+.pause-menu-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(13, 14, 18, 0.8);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.pause-menu-card {
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 384px;
+  width: 100%;
+  margin: 0 16px;
+}
+
+.pause-menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.pause-menu-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: var(--color-accent-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.pause-menu-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.pause-menu-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.pause-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pause-menu-btn-resume {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  font-weight: 700;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+.pause-menu-btn-resume:hover {
+  background-color: var(--color-accent-hover);
+  transform: scale(1.02);
+}
+.pause-menu-btn-resume:active {
+  transform: scale(0.98);
+}
+
+.pause-menu-btn-restart {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+}
+.pause-menu-btn-restart:hover {
+  border-color: var(--color-border-accent);
+  color: var(--color-accent);
+}
+
+.pause-menu-btn-quit {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.pause-menu-btn-quit:hover {
+  color: var(--color-danger);
+}
+
+.pause-menu-hint {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.pause-menu-kbd {
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin: 0 4px;
+}

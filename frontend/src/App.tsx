@@ -9,6 +9,7 @@ import LoginScreen from './ui/LoginScreen';
 import RegisterScreen from './ui/RegisterScreen';
 import DashboardScreen from './ui/DashboardScreen';
 import type { SessionStats } from './types';
+import './App.css';
 
 export default function App() {
   const [lastStats, setLastStats] = useState<SessionStats | null>(null);
@@ -18,7 +19,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="w-full h-full bg-bg-primary">
+    <div className="app-container">
       <Routes>
         <Route path="/" element={<MainMenu />} />
         <Route path="/play" element={<GameScreen onGameOver={handleGameOver} />} />

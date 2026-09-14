@@ -1,5 +1,6 @@
 import type { GameEngineState } from '../types';
 import { Volume2, VolumeX, Pause } from 'lucide-react';
+import './GameHUD.css';
 
 interface GameHUDProps {
   state: GameEngineState;
@@ -13,86 +14,84 @@ export default function GameHUD({ state, soundEnabled, onToggleSound, onPause }:
   const hpPercent = (base.hp / base.maxHp) * 100;
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="game-hud-container">
       {/* Top Bar */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex items-start justify-between">
+      <div className="game-hud-top-bar">
         {/* Left: Wave & Score */}
-        <div className="flex items-center gap-4 pointer-events-auto">
+        <div className="game-hud-left-group">
           {/* Wave indicator */}
-          <div className="glass rounded-2xl px-4 py-2 flex items-center gap-2">
-            <span className="text-accent text-xs font-semibold tracking-wider uppercase">Wave</span>
-            <span className="text-text-primary font-bold text-lg font-mono">
+          <div className="game-hud-wave-indicator glass">
+            <span className="game-hud-label-accent">Wave</span>
+            <span className="game-hud-value">
               {currentWave}
-              <span className="text-text-muted text-sm">/{totalWaves}</span>
+              <span className="game-hud-value-sub">/{totalWaves}</span>
             </span>
           </div>
 
           {/* Score */}
-          <div className="glass rounded-2xl px-4 py-2">
-            <div className="text-text-muted text-[10px] font-semibold tracking-wider uppercase">Score</div>
-            <div className="text-text-primary font-bold text-xl font-mono leading-none mt-0.5">
+          <div className="game-hud-score-card glass">
+            <div className="game-hud-label-muted">Score</div>
+            <div className="game-hud-score-value">
               {stats.score.toLocaleString()}
             </div>
           </div>
         </div>
 
         {/* Center: HP Bar */}
-        <div className="flex flex-col items-center gap-1">
-          <div className="text-[10px] font-semibold tracking-wider uppercase text-text-muted">
+        <div className="game-hud-hp-group">
+          <div className="game-hud-label-muted">
             Base HP
           </div>
-          <div className="w-48 h-2.5 rounded-full bg-bg-surface-solid overflow-hidden border border-border">
+          <div className="game-hud-hp-bar-container">
             <div
-              className={`h-full rounded-full transition-all duration-300 ${
+              className={`game-hud-hp-bar-fill ${
                 hpPercent > 50
                   ? 'bg-accent'
                   : hpPercent > 25
                     ? 'bg-warning'
-                    : 'bg-danger animate-pulse'
+                    : 'bg-danger'
               }`}
               style={{ width: `${hpPercent}%` }}
             />
           </div>
-          <div className="text-xs font-mono text-text-secondary">
+          <div className="game-hud-hp-text">
             {base.hp}/{base.maxHp}
           </div>
         </div>
 
         {/* Right: Controls */}
-        <div className="flex items-center gap-2 pointer-events-auto">
+        <div className="game-hud-controls">
           <button
             onClick={onToggleSound}
-            className="glass rounded-xl w-10 h-10 flex items-center justify-center
-                       hover:border-border-accent transition-all cursor-pointer"
+            className="game-hud-btn glass"
             title={soundEnabled ? 'Mute' : 'Unmute'}
           >
-            {soundEnabled ? <Volume2 className="w-4 h-4 text-text-primary" /> : <VolumeX className="w-4 h-4 text-text-muted" />}
+            {soundEnabled ? <Volume2 className="game-hud-btn-icon-primary" /> : <VolumeX className="game-hud-btn-icon-muted" />}
           </button>
           <button
             onClick={onPause}
-            className="glass rounded-xl w-10 h-10 flex items-center justify-center
-                       hover:border-border-accent transition-all cursor-pointer"
+            className="game-hud-btn glass"
             title="Pause (Esc)"
           >
-            <Pause className="w-4 h-4 text-text-primary" />
+            <Pause className="game-hud-btn-icon-primary" />
           </button>
         </div>
       </div>
 
       {/* Bottom Stats Bar */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
+      <div className="game-hud-bottom-bar">
         {/* WPM */}
-        <div className="glass rounded-2xl px-5 py-3 flex items-center gap-4">
-          <div>
-            <div className="text-[10px] font-semibold tracking-wider uppercase text-text-muted">WPM</div>
-            <div className="text-3xl font-black font-mono text-accent leading-none mt-0.5">
+        <div className="game-hud-stats-card glass">
+          <div className="game-hud-stats-group">
+            <div className="game-hud-label-muted">WPM</div>
+            <div className="game-hud-wpm-value">
               {currentWpm}
             </div>
           </div>
-          <div className="w-px h-8 bg-border" />
-          <div>
-            <div className="text-[10px] font-semibold tracking-wider uppercase text-text-muted">Accuracy</div>
-            <div className="text-xl font-bold font-mono text-text-primary leading-none mt-0.5">
+          <div className="game-hud-divider" />
+          <div className="game-hud-stats-group">
+            <div className="game-hud-label-muted">Accuracy</div>
+            <div className="game-hud-acc-value">
               {accuracy}%
             </div>
           </div>
@@ -100,18 +99,18 @@ export default function GameHUD({ state, soundEnabled, onToggleSound, onPause }:
 
         {/* Combo */}
         {stats.combo > 1 && (
-          <div className="glass rounded-2xl px-5 py-3 animate-scale-in glow-accent">
-            <div className="text-[10px] font-semibold tracking-wider uppercase text-accent">Combo</div>
-            <div className="text-3xl font-black font-mono text-accent leading-none mt-0.5">
+          <div className="game-hud-combo-card glass animate-scale-in glow-accent">
+            <div className="game-hud-label-accent">Combo</div>
+            <div className="game-hud-wpm-value">
               x{stats.combo}
             </div>
           </div>
         )}
 
         {/* Words destroyed */}
-        <div className="glass rounded-2xl px-5 py-3">
-          <div className="text-[10px] font-semibold tracking-wider uppercase text-text-muted">Destroyed</div>
-          <div className="text-xl font-bold font-mono text-text-primary leading-none mt-0.5">
+        <div className="game-hud-destroyed-card glass">
+          <div className="game-hud-label-muted">Destroyed</div>
+          <div className="game-hud-acc-value">
             {stats.wordsDestroyed}
           </div>
         </div>

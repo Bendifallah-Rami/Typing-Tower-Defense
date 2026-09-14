@@ -4,6 +4,7 @@ import { GameEngine } from '../engine/GameEngine';
 import GameHUD from './GameHUD';
 import PauseMenu from './PauseMenu';
 import type { GameEngineState, SessionStats, GamePhase } from '../types';
+import './GameScreen.css';
 
 interface GameScreenProps {
   onGameOver: (stats: SessionStats) => void;
@@ -134,11 +135,11 @@ export default function GameScreen({ onGameOver }: GameScreenProps) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full overflow-hidden bg-bg-primary">
+    <div ref={containerRef} className="game-screen-container">
       {/* Game Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="game-screen-canvas"
       />
 
       {/* HUD Overlay */}
