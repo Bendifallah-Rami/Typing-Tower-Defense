@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
+import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 
 export default function LoginScreen() {
@@ -11,21 +12,10 @@ export default function LoginScreen() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
-
+    if (!email || !password) { setError('Please fill in all fields'); return; }
     setLoading(true);
-
     try {
-      // TODO: Connect to backend
-      // const response = await api.login({ email, password });
-      // localStorage.setItem('token', response.accessToken);
-
-      // For now, simulate
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((r) => setTimeout(r, 1000));
       navigate('/');
     } catch {
       setError('Invalid email or password');
@@ -34,66 +24,67 @@ export default function LoginScreen() {
     }
   };
 
-  return (
-    <div className="w-full h-full flex items-center justify-center dot-pattern">
-      {/* Ambient glow */}
-      <div className="fixed top-[-100px] right-[-80px] w-[400px] h-[400px] rounded-full bg-accent/8 blur-[120px] pointer-events-none" />
+  const inputCls = `w-full px-4 py-3 rounded-xl bg-bg-input border border-border
+    text-text-primary placeholder-text-muted outline-none
+    focus:border-border-accent focus:ring-2 focus:ring-accent/10
+    transition-all font-mono text-sm`;
 
-      <div className="w-full max-w-md mx-4 animate-scale-in">
-        {/* Back button */}
+  return (
+    <div className="w-full h-full flex items-center justify-center dashed-grid">
+      <div className="fixed top-[-80px] right-[-60px] w-[360px] h-[360px] rounded-full bg-accent/5 blur-[130px] pointer-events-none" />
+
+      {/* Form card — 400px is the sweet spot for login forms */}
+      <div className="w-full max-w-[420px] mx-6 animate-scale-in">
+
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-6 cursor-pointer"
+          className="flex items-center gap-1.5 text-text-secondary hover:text-accent transition-colors mb-7 cursor-pointer group"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          <span className="text-sm">Back</span>
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          <span className="text-sm font-medium">Back</span>
         </button>
 
-        <div className="glass-elevated rounded-3xl p-8">
+        <div className="glass-elevated rounded-2xl p-8">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-text-primary mb-2">Welcome Back</h1>
+          <div className="mb-7">
+            <h1
+              className="text-2xl font-bold text-text-primary mb-1"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
+              Welcome Back
+            </h1>
             <p className="text-text-secondary text-sm">Sign in to save your scores</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="block text-xs font-semibold tracking-wider uppercase text-text-muted mb-2">
+              <label className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-text-muted mb-2">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-bg-input border border-border
-                           text-text-primary placeholder-text-muted outline-none
-                           focus:border-border-accent focus:ring-1 focus:ring-accent/30
-                           transition-all font-mono text-sm"
+                className={inputCls}
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold tracking-wider uppercase text-text-muted mb-2">
+              <label className="block text-[11px] font-semibold tracking-[0.12em] uppercase text-text-muted mb-2">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-bg-input border border-border
-                           text-text-primary placeholder-text-muted outline-none
-                           focus:border-border-accent focus:ring-1 focus:ring-accent/30
-                           transition-all font-mono text-sm"
+                className={inputCls}
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="px-4 py-2.5 rounded-xl bg-danger-dim border border-danger/30 text-danger text-sm">
+              <div className="px-4 py-2.5 rounded-xl bg-danger-dim border border-danger/20 text-danger text-sm">
                 {error}
               </div>
             )}
@@ -101,34 +92,23 @@ export default function LoginScreen() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-accent text-accent-text font-bold rounded-xl
+              className="w-full py-3 bg-accent text-accent-text font-bold rounded-xl text-sm
                          hover:bg-accent-hover transition-all duration-200
-                         disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+                         disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer mt-1"
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Signing in...
-                </span>
-              ) : (
-                'Sign In'
-              )}
+              {loading ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
 
-          {/* Register link */}
-          <div className="mt-6 text-center text-sm text-text-secondary">
-            Don&apos;t have an account?{' '}
+          <p className="mt-6 text-center text-sm text-text-secondary">
+            No account?{' '}
             <button
               onClick={() => navigate('/register')}
               className="text-accent hover:text-accent-hover transition-colors cursor-pointer font-semibold"
             >
               Create one
             </button>
-          </div>
+          </p>
         </div>
       </div>
     </div>

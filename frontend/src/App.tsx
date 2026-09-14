@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 import MainMenu from './ui/MainMenu';
+import Test from './ui/test'
 import GameScreen from './ui/GameScreen';
 import GameOverScreen from './ui/GameOverScreen';
 import LeaderboardScreen from './ui/LeaderboardScreen';

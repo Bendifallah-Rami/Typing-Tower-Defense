@@ -1,47 +1,35 @@
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════════════
-   Design System — Portfolio-Matched Theme Tokens
-   ═══════════════════════════════════════════════════════════ */
-
 @theme {
-  /* ─── Colors ──────────────────────────────────────── */
-  --color-bg-primary: #0a0a14;
-  --color-bg-secondary: #111122;
-  --color-bg-surface: rgba(17, 20, 40, 0.6);
-  --color-bg-surface-solid: #141428;
-  --color-bg-elevated: rgba(25, 28, 50, 0.8);
-  --color-bg-input: rgba(15, 15, 30, 0.8);
-
+  --color-bg-primary: #080810;
+  --color-bg-secondary: #0d0d1a;
+  --color-bg-surface: rgba(15, 17, 35, 0.65);
+  --color-bg-surface-solid: #101020;
+  --color-bg-elevated: rgba(20, 22, 45, 0.85);
+  --color-bg-input: rgba(12, 12, 24, 0.9);
   --color-accent: #c2f751;
   --color-accent-hover: #d4ff6a;
-  --color-accent-dim: rgba(194, 247, 81, 0.15);
-  --color-accent-glow: rgba(194, 247, 81, 0.3);
-  --color-accent-text: #0a0a14;
-
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #8a8a9a;
-  --color-text-muted: #5a5a6a;
+  --color-accent-dim: rgba(194, 247, 81, 0.12);
+  --color-accent-glow: rgba(194, 247, 81, 0.25);
+  --color-accent-text: #080810;
+  --color-text-primary: #ededf5;
+  --color-text-secondary: #7a7a92;
+  --color-text-muted: #4a4a62;
   --color-text-accent: #c2f751;
-
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-accent: rgba(194, 247, 81, 0.3);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
-
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-accent: rgba(194, 247, 81, 0.25);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
   --color-danger: #ff4757;
-  --color-danger-dim: rgba(255, 71, 87, 0.15);
+  --color-danger-dim: rgba(255, 71, 87, 0.12);
   --color-success: #2ed573;
-  --color-success-dim: rgba(46, 213, 115, 0.15);
+  --color-success-dim: rgba(46, 213, 115, 0.12);
   --color-warning: #ffa502;
-  --color-warning-dim: rgba(255, 165, 2, 0.15);
+  --color-warning-dim: rgba(255, 165, 2, 0.12);
   --color-info: #61dafb;
-  --color-info-dim: rgba(97, 218, 251, 0.15);
-
-  /* ─── Fonts ───────────────────────────────────────── */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
-
-  /* ─── Animations ──────────────────────────────────── */
+  --color-info-dim: rgba(97, 218, 251, 0.12);
+  --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-display: "Syne", "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
   --animate-fade-in: fade-in 0.5s ease-out;
   --animate-slide-up: slide-up 0.5s ease-out;
   --animate-slide-down: slide-down 0.3s ease-out;
@@ -50,48 +38,14 @@
   --animate-float: float 6s ease-in-out infinite;
 }
 
-/* ─── Keyframes ─────────────────────────────────────── */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slide-down { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(194,247,81,0.08); } 50% { box-shadow: 0 0 40px rgba(194,247,81,0.22); } }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-down {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(194, 247, 81, 0.1); }
-  50% { box-shadow: 0 0 40px rgba(194, 247, 81, 0.25); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* ─── Global Styles ─────────────────────────────────── */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body, #root {
   width: 100%;
@@ -104,49 +58,40 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Scrollbar ─────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 
-/* ─── Utility: Glass ────────────────────────────────── */
 .glass {
   background: var(--color-bg-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--color-border);
 }
 
 .glass-elevated {
   background: var(--color-bg-elevated);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--color-border);
 }
 
-/* ─── Utility: Glow ─────────────────────────────────── */
 .glow-accent {
-  box-shadow: 0 0 30px rgba(194, 247, 81, 0.15),
-              0 0 60px rgba(194, 247, 81, 0.05);
+  box-shadow: 0 0 30px rgba(194,247,81,0.1), 0 0 60px rgba(194,247,81,0.04);
 }
 
 .glow-danger {
-  box-shadow: 0 0 30px rgba(255, 71, 87, 0.15),
-              0 0 60px rgba(255, 71, 87, 0.05);
+  box-shadow: 0 0 30px rgba(255,71,87,0.1), 0 0 60px rgba(255,71,87,0.04);
 }
 
-/* ─── Utility: Dot Pattern BG ───────────────────────── */
+.dashed-grid,
 .dot-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background-color: var(--color-bg-primary);
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
 }
+
+.font-display { font-family: var(--font-display); }

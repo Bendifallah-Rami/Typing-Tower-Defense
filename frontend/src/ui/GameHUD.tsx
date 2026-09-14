@@ -1,4 +1,5 @@
 import type { GameEngineState } from '../types';
+import { Volume2, VolumeX, Pause } from 'lucide-react';
 
 interface GameHUDProps {
   state: GameEngineState;
@@ -65,7 +66,7 @@ export default function GameHUD({ state, soundEnabled, onToggleSound, onPause }:
                        hover:border-border-accent transition-all cursor-pointer"
             title={soundEnabled ? 'Mute' : 'Unmute'}
           >
-            {soundEnabled ? '🔊' : '🔇'}
+            {soundEnabled ? <Volume2 className="w-4 h-4 text-text-primary" /> : <VolumeX className="w-4 h-4 text-text-muted" />}
           </button>
           <button
             onClick={onPause}
@@ -73,7 +74,7 @@ export default function GameHUD({ state, soundEnabled, onToggleSound, onPause }:
                        hover:border-border-accent transition-all cursor-pointer"
             title="Pause (Esc)"
           >
-            ⏸️
+            <Pause className="w-4 h-4 text-text-primary" />
           </button>
         </div>
       </div>
