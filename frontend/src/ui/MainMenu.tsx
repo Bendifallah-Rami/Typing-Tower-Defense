@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { LogOut, User as UserIcon } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
 /*  Hero demo config                                                    */
@@ -27,6 +29,7 @@ type Entity = {
 
 export default function MainMenu() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const fieldRef = useRef<HTMLDivElement | null>(null);
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -672,12 +675,27 @@ export default function MainMenu() {
         </div>
 
         <nav className="ttd-header-right">
-          <button onClick={() => navigate('/login')} className="ttd-btn-ghost">
-            Sign in
-          </button>
-          <button onClick={() => navigate('/register')} className="ttd-btn-outline">
-            Create account
-          </button>
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#aaa' }}>
+                <UserIcon size={16} />
+                <span style={{ color: 'white', fontWeight: 600 }}>{user.username}</span>
+              </div>
+              <button onClick={logout} className="ttd-btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <LogOut size={16} />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <button onClick={() => navigate('/login')} className="ttd-btn-ghost">
+                Sign in
+              </button>
+              <button onClick={() => navigate('/register')} className="ttd-btn-outline">
+                Create account
+              </button>
+            </>
+          )}
         </nav>
       </header>
 
