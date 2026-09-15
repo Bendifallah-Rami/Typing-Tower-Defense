@@ -11,9 +11,9 @@ export declare class AuthService {
         refreshToken: string;
     }>;
     signup(signupDto: SignupDto): Promise<{
+        id: string;
         email: string;
         username: string;
-        id: string;
         createdAt: Date;
     }>;
 }

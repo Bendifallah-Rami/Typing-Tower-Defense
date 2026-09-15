@@ -11,7 +11,6 @@ export declare class DashboardController {
         globalRank: number;
         recentGames: {
             id: string;
-            userId: string;
             score: number;
             maxWpm: number;
             avgWpm: number;
@@ -19,6 +18,7 @@ export declare class DashboardController {
             wavesReached: number;
             duration: number;
             playedAt: Date;
+            userId: string;
         }[];
         progressionData: {
             date: string;
