@@ -728,15 +728,6 @@ export default function MainMenu() {
                 <button onClick={() => navigate('/dashboard')} className="ttd-btn-sec">
                   Your stats
                 </button>
-                <a 
-                  href="https://github.com/Bendifallah-Rami/Typing-Tower-Defense" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="ttd-btn-sec" 
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
-                >
-                  <Star size={16} /> Star on GitHub
-                </a>
               </div>
             </div>
           </div>
@@ -789,9 +780,21 @@ export default function MainMenu() {
 
       {/* ---------- Footer ---------- */}
       <footer className="ttd-footer">
-        <span>
-          Built by <span>Rami Bendifallah</span>
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <span>
+            Built by <span>Rami Bendifallah</span>
+          </span>
+          <a 
+            href="https://github.com/Bendifallah-Rami/Typing-Tower-Defense" 
+            target="_blank" 
+            rel="noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#999', textDecoration: 'none', fontSize: '12px', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#C2F751'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#999'}
+          >
+            <Star size={14} /> If you enjoy the game, please consider giving it a star on GitHub!
+          </a>
+        </div>
         <span>React, Canvas, TypeScript</span>
       </footer>
     </div>
