@@ -9,13 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
 let PrismaService = class PrismaService extends PrismaClient {
     constructor() {
-        const adapter = new PrismaLibSql({
-            url: 'file:./dev.db',
-        });
-        super({ adapter });
+        super();
     }
     async onModuleInit() {
         await this.$connect();
