@@ -664,16 +664,8 @@ export default function MainMenu() {
       <header className="ttd-header">
         <div className="ttd-header-left">
           <div className="ttd-logo-box">
-            <svg width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path d="M2 2v14" stroke="#C2F751" strokeWidth="2.4" strokeLinecap="round" />
-              <path
-                d="M7 5l4 4-4 4"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ color: '#999' }}
-              />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#C2F751" fillRule="evenodd" clipRule="evenodd" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 22H22V18H18V8H20V2H16V6H14V2H10V6H8V2H4V8H6V18H2V22ZM9 10H15V12H13V16H11V12H9V10Z" />
             </svg>
           </div>
           <span className="ttd-logo-text">TTD</span>
