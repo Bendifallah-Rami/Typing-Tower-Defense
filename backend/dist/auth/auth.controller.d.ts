@@ -8,9 +8,9 @@ export declare class AuthController {
         refreshToken: string;
     }>;
     signup(signupDto: SignupDto): Promise<{
-        id: string;
         email: string;
         username: string;
+        id: string;
         createdAt: Date;
     }>;
     getProfile(req: any): any;
