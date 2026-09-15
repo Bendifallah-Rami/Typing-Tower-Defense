@@ -46,6 +46,7 @@ export class CanvasRenderer {
   private particles: ParticleSystem;
   private shake: ScreenShake = { intensity: 0, duration: 0, elapsed: 0, offsetX: 0, offsetY: 0 };
   private dotPattern: ImageData | null = null;
+  private timeElapsed: number = 0;
 
   // Wave banner animation
   private waveBannerText = '';
@@ -151,7 +152,8 @@ export class CanvasRenderer {
     const w = this.width;
     const h = this.height;
 
-    // Update screen shake
+    // Update time and screen shake
+    this.timeElapsed += dt;
     this.updateShake(dt);
 
     ctx.save();
@@ -273,6 +275,30 @@ export class CanvasRenderer {
     ctx.fillRect(x - radius * 3, y - radius * 3, radius * 6, radius * 6);
 
     const baseColor = hpRatio > 0.25 ? COLORS.baseStroke : COLORS.danger;
+
+    // Draw orbital rings
+    ctx.save();
+    ctx.translate(x, y);
+    
+    // Inner fast ring
+    ctx.rotate(this.timeElapsed * 1.5);
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 1.4, 0, Math.PI * 2);
+    ctx.strokeStyle = COLORS.borderAccent;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([10, 20]);
+    ctx.stroke();
+    
+    // Outer slower ring (rotating opposite direction)
+    ctx.rotate(-this.timeElapsed * 2.2); // counteract previous and go opposite
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 1.8, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([30, 40, 5, 40]);
+    ctx.stroke();
+    
+    ctx.restore();
 
     // Draw Hexagon Foundation instead of circle
     ctx.beginPath();

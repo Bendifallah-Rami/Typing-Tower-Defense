@@ -110,23 +110,24 @@ export class DifficultyController {
 
     this.currentParams = {
       // Spawn interval decreases as WPM increases (more words!)
+      // Ensure the floor isn't insanely fast (limit to 1200ms)
       spawnInterval: Math.max(
-        600,
-        lerp(3000, 800, t) / this.waveMultiplier
+        1200,
+        lerp(3000, 1200, t) / this.waveMultiplier
       ),
 
       // Word length increases with WPM
       wordMinLength: Math.floor(lerp(3, 5, t)),
-      wordMaxLength: Math.floor(lerp(6, 12, t)),
+      wordMaxLength: Math.floor(lerp(6, 10, t)),
 
       // Enemy speed increases with WPM
-      enemySpeed: lerp(30, 80, t) * this.waveMultiplier,
+      enemySpeed: lerp(30, 65, t) * this.waveMultiplier,
 
-      // More simultaneous words as player improves
-      maxSimultaneousWords: Math.floor(lerp(4, 15, t) * this.waveMultiplier),
+      // More simultaneous words as player improves, tightly capped
+      maxSimultaneousWords: Math.floor(lerp(3, 6, t) * this.waveMultiplier),
 
       // More programming words at higher WPM
-      programmingWordChance: lerp(0.05, 0.4, t),
+      programmingWordChance: lerp(0.1, 0.4, t),
     };
 
     return this.currentParams;
