@@ -18,9 +18,9 @@
 
 .dashboard-content {
   width: 100%;
-  max-width: 860px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 60px 24px;
 }
 
 .dashboard-back-btn {
@@ -99,11 +99,13 @@
 }
 
 .dashboard-card {
-  padding: 20px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--color-bg-surface-solid);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .dashboard-card-icon-container {
@@ -122,9 +124,10 @@
 }
 
 .dashboard-card-value {
-  font-size: 24px;
-  font-weight: 900;
-  font-family: var(--font-mono);
+  font-size: 38px;
+  font-weight: 800;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.02em;
 }
 .dashboard-card-value.is-accent {
   color: var(--color-accent);
@@ -134,9 +137,9 @@
 }
 
 .dashboard-card-label {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-text-secondary);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .dashboard-secondary-grid {
@@ -147,8 +150,10 @@
 }
 
 .dashboard-secondary-card {
-  padding: 20px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--color-bg-surface-solid);
 }
 
 .dashboard-secondary-card-header {
@@ -173,13 +178,15 @@
 }
 
 .dashboard-secondary-value {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   font-family: var(--font-mono);
 }
 
 .dashboard-table-container {
-  border-radius: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--color-bg-surface-solid);
   overflow: hidden;
 }
 
@@ -198,10 +205,10 @@
 
 .dashboard-table-cols {
   display: grid;
-  grid-template-columns: 1fr 72px 72px 60px 68px;
-  gap: 12px;
-  padding: 10px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.024);
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .dashboard-table-col-header {
@@ -217,18 +224,19 @@
 
 .dashboard-table-row {
   display: grid;
-  grid-template-columns: 1fr 72px 72px 60px 68px;
-  gap: 12px;
-  padding: 14px 20px;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 18px 24px;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.015);
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 .dashboard-table-row:last-child {
   border-bottom: 0;
 }
 .dashboard-table-row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.04);
+  transform: translateX(4px);
 }
 
 .dashboard-row-score {

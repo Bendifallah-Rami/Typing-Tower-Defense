@@ -66,7 +66,7 @@ export default function DashboardScreen() {
           ].map(({ value, label, Icon, accent }) => (
             <div
               key={label}
-              className={`dashboard-card glass ${accent ? 'glow-accent' : ''}`}
+              className={`dashboard-card ${accent ? 'glow-accent' : ''}`}
             >
               <div className="dashboard-card-icon-container">
                 <Icon className={`dashboard-card-icon ${accent ? 'is-accent' : 'is-muted'}`} />
@@ -97,7 +97,7 @@ export default function DashboardScreen() {
               accent: false
             },
           ].map(({ Icon, label, value, accent }) => (
-            <div key={label} className="dashboard-secondary-card glass">
+            <div key={label} className="dashboard-secondary-card">
               <div className="dashboard-secondary-card-header">
                 <Icon className="dashboard-secondary-icon" />
                 <span className="dashboard-secondary-label">
@@ -112,7 +112,7 @@ export default function DashboardScreen() {
         </div>
 
         {/* Recent games table */}
-        <div className="dashboard-table-container glass">
+        <div className="dashboard-table-container">
           <div className="dashboard-table-header">
             <h3 className="dashboard-table-title">
               Recent Games
