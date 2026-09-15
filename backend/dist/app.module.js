@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { SessionsModule } from './sessions/sessions.module.js';
 import { LeaderboardModule } from './leaderboard/leaderboard.module.js';
+import { DashboardModule } from './dashboard/dashboard.module.js';
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -22,6 +23,7 @@ AppModule = __decorate([
             AuthModule,
             SessionsModule,
             LeaderboardModule,
+            DashboardModule,
         ],
         controllers: [AppController],
         providers: [AppService],

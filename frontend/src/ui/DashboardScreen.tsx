@@ -1,29 +1,58 @@
 import { useNavigate } from 'react-router-dom';
 import {
   ChevronLeft, BarChart2, Gamepad2, Trophy, Zap,
-  Target, Clock, Globe, TrendingUp,
+  Target, Clock, Globe, TrendingUp, LogOut
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import * as apiClient from '../api/client';
+import type { DashboardStats } from '../types';
 import './DashboardScreen.css';
-
-const MOCK_STATS = {
-  totalGames: 42,
-  bestScore: 12450,
-  bestWpm: 95,
-  avgAccuracy: 94.7,
-  totalPlayTime: 7200,
-  globalRank: 15,
-  recentGames: [
-    { id: '1', score: 8540, maxWpm: 78, accuracy: 94.3, wavesReached: 8, duration: 245, playedAt: '2026-09-14' },
-    { id: '2', score: 7230, maxWpm: 71, accuracy: 93.2, wavesReached: 7, duration: 198, playedAt: '2026-09-13' },
-    { id: '3', score: 9870, maxWpm: 82, accuracy: 97.1, wavesReached: 10, duration: 312, playedAt: '2026-09-13' },
-    { id: '4', score: 6540, maxWpm: 68, accuracy: 91.7, wavesReached: 6, duration: 176, playedAt: '2026-09-12' },
-    { id: '5', score: 5980, maxWpm: 65, accuracy: 92.4, wavesReached: 6, duration: 165, playedAt: '2026-09-11' },
-  ],
-};
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
-  const stats = MOCK_STATS;
+  const { user, logout, isLoading: isAuthLoading } = useAuth();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isAuthLoading) return;
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const fetchStats = async () => {
+      try {
+        const data = await apiClient.getDashboardStats();
+        setStats(data);
+      } catch (err) {
+        setError('Failed to load dashboard data.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [user, isAuthLoading, navigate]);
+
+  if (isAuthLoading || isLoading) {
+    return (
+      <div className="dashboard-container dashed-grid" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
+        LOADING DATA...
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="dashboard-container dashed-grid" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-danger)' }}>
+        {error || 'An error occurred'}
+      </div>
+    );
+  }
+
   const totalHours = Math.floor(stats.totalPlayTime / 3600);
   const totalMinutes = Math.floor((stats.totalPlayTime % 3600) / 60);
 
@@ -34,17 +63,29 @@ export default function DashboardScreen() {
       {/* Centered container */}
       <div className="dashboard-content animate-slide-up">
 
-        {/* Back */}
-        <button
-          onClick={() => navigate('/')}
-          className="dashboard-back-btn group"
-        >
-          <ChevronLeft />
-          <span className="dashboard-back-text">Back</span>
-        </button>
+        {/* Header Bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <button
+            onClick={() => navigate('/')}
+            className="dashboard-back-btn group"
+            style={{ margin: 0 }}
+          >
+            <ChevronLeft />
+            <span className="dashboard-back-text">Back</span>
+          </button>
+          
+          <button
+            onClick={() => { logout(); navigate('/'); }}
+            className="dashboard-back-btn group"
+            style={{ margin: 0 }}
+          >
+            <span className="dashboard-back-text" style={{ marginRight: '8px' }}>Logout</span>
+            <LogOut size={16} />
+          </button>
+        </div>
 
         {/* Page header */}
-        <div className="dashboard-header">
+        <div className="dashboard-header" style={{ marginTop: '0' }}>
           <div className="dashboard-subtitle">
             <BarChart2 />
             <span className="dashboard-subtitle-text">
@@ -62,7 +103,7 @@ export default function DashboardScreen() {
             { value: stats.totalGames, label: 'Games Played', Icon: Gamepad2, accent: false },
             { value: stats.bestScore.toLocaleString(), label: 'Best Score', Icon: Trophy, accent: true },
             { value: `${stats.bestWpm}`, label: 'Peak WPM', Icon: Zap, accent: true },
-            { value: `${stats.avgAccuracy}%`, label: 'Avg Accuracy', Icon: Target, accent: false },
+            { value: `${stats.avgAccuracy.toFixed(1)}%`, label: 'Avg Accuracy', Icon: Target, accent: false },
           ].map(({ value, label, Icon, accent }) => (
             <div
               key={label}
@@ -91,9 +132,9 @@ export default function DashboardScreen() {
             {
               Icon: TrendingUp,
               label: 'Avg Score',
-              value: Math.round(
+              value: stats.recentGames.length > 0 ? Math.round(
                 stats.recentGames.reduce((s, g) => s + g.score, 0) / stats.recentGames.length
-              ).toLocaleString(),
+              ).toLocaleString() : '0',
               accent: false
             },
           ].map(({ Icon, label, value, accent }) => (
@@ -140,7 +181,7 @@ export default function DashboardScreen() {
                 <div className="dashboard-row-score">
                   {game.score.toLocaleString()} pts
                 </div>
-                <div className="dashboard-row-date">{game.playedAt}</div>
+                <div className="dashboard-row-date">{new Date(game.playedAt).toLocaleDateString()}</div>
               </div>
               <div className="dashboard-row-cell">{game.maxWpm}</div>
               <div className="dashboard-row-cell">{game.accuracy}%</div>

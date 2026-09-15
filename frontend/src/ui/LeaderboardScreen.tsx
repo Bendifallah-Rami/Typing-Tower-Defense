@@ -1,21 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, Trophy, Medal, Award } from 'lucide-react';
-import type { LeaderboardPeriod } from '../types';
+import type { LeaderboardPeriod, LeaderboardEntry } from '../types';
+import * as apiClient from '../api/client';
+import { useAuth } from '../context/AuthContext';
 import './LeaderboardScreen.css';
 
-const MOCK_LEADERBOARD = [
-  { rank: 1, username: 'speedtyper', score: 12450, maxWpm: 95, accuracy: 98.2 },
-  { rank: 2, username: 'codemaster', score: 10230, maxWpm: 88, accuracy: 96.5 },
-  { rank: 3, username: 'devninja', score: 9870, maxWpm: 82, accuracy: 97.1 },
-  { rank: 4, username: 'keywarrior', score: 8540, maxWpm: 78, accuracy: 94.3 },
-  { rank: 5, username: 'typist42', score: 7890, maxWpm: 75, accuracy: 95.8 },
-  { rank: 6, username: 'hackerman', score: 7230, maxWpm: 71, accuracy: 93.2 },
-  { rank: 7, username: 'swiftkeys', score: 6540, maxWpm: 68, accuracy: 91.7 },
-  { rank: 8, username: 'bytecoder', score: 5980, maxWpm: 65, accuracy: 92.4 },
-  { rank: 9, username: 'pixeldev', score: 5320, maxWpm: 62, accuracy: 90.8 },
-  { rank: 10, username: 'stackflow', score: 4890, maxWpm: 59, accuracy: 89.5 },
-];
+
 
 function RankBadge({ rank }: { rank: number }) {
   if (rank === 1) return <Trophy className="leaderboard-rank-icon gold" />;
@@ -26,7 +17,29 @@ function RankBadge({ rank }: { rank: number }) {
 
 export default function LeaderboardScreen() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [period, setPeriod] = useState<LeaderboardPeriod>('all');
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    const fetchBoard = async () => {
+      setIsLoading(true);
+      setError('');
+      try {
+        const data = await apiClient.getLeaderboard(period, 'score', 50);
+        if (active) setEntries(data);
+      } catch (err) {
+        if (active) setError('Failed to load leaderboard data.');
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    };
+    fetchBoard();
+    return () => { active = false; };
+  }, [period]);
 
   return (
     <div className="leaderboard-container dashed-grid">
@@ -75,8 +88,27 @@ export default function LeaderboardScreen() {
 
         {/* Table card */}
         <div className="leaderboard-table-card glass">
-          {/* Column headers */}
-          <div className="leaderboard-table-cols">
+          {isLoading && (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
+              LOADING DATA...
+            </div>
+          )}
+          
+          {error && !isLoading && (
+            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-danger)' }}>
+              {error}
+            </div>
+          )}
+
+          {!isLoading && !error && entries.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
+              No scores recorded yet. Be the first!
+            </div>
+          )}
+
+          {!isLoading && !error && entries.length > 0 && (
+            <>
+              <div className="leaderboard-table-cols">
             {['#', 'Player', 'Score', 'WPM', 'Acc'].map((h) => (
               <span
                 key={h}
@@ -89,9 +121,9 @@ export default function LeaderboardScreen() {
             ))}
           </div>
 
-          {MOCK_LEADERBOARD.map((entry, i) => (
+          {entries.map((entry, i) => (
             <div
-              key={entry.rank}
+              key={`${entry.rank}-${entry.username}`}
               className={`leaderboard-table-row ${i < 3 ? 'top-3' : ''}`}
             >
               {/* Rank */}
@@ -121,22 +153,32 @@ export default function LeaderboardScreen() {
                 {entry.maxWpm}
               </span>
               <span className="leaderboard-stat-col">
-                {entry.accuracy}%
+                {entry.accuracy.toFixed(1)}%
               </span>
             </div>
           ))}
+            </>
+          )}
         </div>
 
         {/* Your rank footer */}
-        <div className="leaderboard-footer glass">
-          <span className="leaderboard-footer-text">Sign in to see your rank</span>
-          <button
-            onClick={() => navigate('/login')}
-            className="leaderboard-btn-signin"
-          >
-            Sign In
-          </button>
-        </div>
+        {!user && (
+          <div className="leaderboard-footer glass">
+            <span className="leaderboard-footer-text">Sign in to save your scores and rank</span>
+            <button
+              onClick={() => navigate('/login')}
+              className="leaderboard-btn-signin"
+            >
+              Sign In
+            </button>
+          </div>
+        )}
+        
+        {user && (
+          <div className="leaderboard-footer glass" style={{ justifyContent: 'center' }}>
+            <span className="leaderboard-footer-text" style={{ color: 'var(--color-accent)' }}>Logged in as {user.username}</span>
+          </div>
+        )}
       </div>
     </div>
   );

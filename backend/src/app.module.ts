@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { SessionsModule } from './sessions/sessions.module.js';
 import { LeaderboardModule } from './leaderboard/leaderboard.module.js';
+import { DashboardModule } from './dashboard/dashboard.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module.js';
     AuthModule,
     SessionsModule,
     LeaderboardModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

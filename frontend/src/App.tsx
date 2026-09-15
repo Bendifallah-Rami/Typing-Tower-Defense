@@ -8,6 +8,7 @@ import LeaderboardScreen from './ui/LeaderboardScreen';
 import LoginScreen from './ui/LoginScreen';
 import RegisterScreen from './ui/RegisterScreen';
 import DashboardScreen from './ui/DashboardScreen';
+import { AuthProvider } from './context/AuthContext';
 import type { SessionStats } from './types';
 import './App.css';
 
@@ -19,16 +20,18 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app-container">
-      <Routes>
-        <Route path="/" element={<MainMenu />} />
-        <Route path="/play" element={<GameScreen onGameOver={handleGameOver} />} />
-        <Route path="/game-over" element={<GameOverScreen stats={lastStats} />} />
-        <Route path="/leaderboard" element={<LeaderboardScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/register" element={<RegisterScreen />} />
-        <Route path="/dashboard" element={<DashboardScreen />} />
-      </Routes>
-    </div>
+    <AuthProvider>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<MainMenu />} />
+          <Route path="/play" element={<GameScreen onGameOver={handleGameOver} />} />
+          <Route path="/game-over" element={<GameOverScreen stats={lastStats} />} />
+          <Route path="/leaderboard" element={<LeaderboardScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
+          <Route path="/dashboard" element={<DashboardScreen />} />
+        </Routes>
+      </div>
+    </AuthProvider>
   );
 }

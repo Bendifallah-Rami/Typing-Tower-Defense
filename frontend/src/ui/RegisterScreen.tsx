@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { isAxiosError } from 'axios';
 import './RegisterScreen.css';
 
 export default function RegisterScreen() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,10 +23,14 @@ export default function RegisterScreen() {
     if (password.length < 8) { setError('Password must be at least 8 characters'); return; }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1000));
+      await register({ email, username, password });
       navigate('/login');
-    } catch {
-      setError('Registration failed. Please try again.');
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

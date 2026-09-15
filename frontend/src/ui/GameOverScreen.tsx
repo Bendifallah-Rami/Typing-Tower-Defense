@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import type { SessionStats } from '../types';
+import { useEffect, useRef } from 'react';
+import type { SessionStats, GameSessionPayload } from '../types';
+import { useAuth } from '../context/AuthContext';
+import * as apiClient from '../api/client';
 import './GameOverScreen.css';
 
 interface GameOverScreenProps {
@@ -13,6 +16,24 @@ const PAD_B = 10;
 
 export default function GameOverScreen({ stats }: GameOverScreenProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const submittedRef = useRef(false);
+
+  useEffect(() => {
+    if (!stats || !user || submittedRef.current) return;
+
+    const payload: GameSessionPayload = {
+      score: stats.score,
+      maxWpm: stats.wpmHistory.length ? Math.max(...stats.wpmHistory.map(h => h.wpm)) : 0,
+      avgWpm: stats.wpmHistory.length ? Math.round(stats.wpmHistory.reduce((s, h) => s + h.wpm, 0) / stats.wpmHistory.length) : 0,
+      accuracy: stats.totalCharsTyped ? Math.round((stats.correctChars / stats.totalCharsTyped) * 100) : 0,
+      wavesReached: 0, // This needs to be tracked in SessionStats, for now default to 0
+      duration: Math.round(stats.elapsedTime),
+    };
+
+    submittedRef.current = true;
+    apiClient.submitSession(payload).catch(console.error);
+  }, [stats, user]);
 
   if (!stats) {
     return (

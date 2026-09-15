@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { isAxiosError } from 'axios';
 import './LoginScreen.css';
 
 export default function LoginScreen() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,10 +19,14 @@ export default function LoginScreen() {
     if (!email || !password) { setError('Please fill in all fields'); return; }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1000));
-      navigate('/');
-    } catch {
-      setError('Invalid email or password');
+      await login({ email, password });
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      if (isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Invalid email or password');
+      }
     } finally {
       setLoading(false);
     }
