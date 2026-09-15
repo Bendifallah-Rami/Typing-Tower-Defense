@@ -1,3 +1,4 @@
+import { Pause } from 'lucide-react';
 import './PauseMenu.css';
 
 interface PauseMenuProps {
@@ -12,8 +13,8 @@ export default function PauseMenu({ onResume, onRestart, onQuit }: PauseMenuProp
       <div className="pause-menu-card glass-elevated animate-scale-in">
         {/* Header */}
         <div className="pause-menu-header">
-          <div className="pause-menu-icon">
-            ⏸️
+          <div className="pause-menu-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+            <Pause size={32} />
           </div>
           <h2 className="pause-menu-title">Paused</h2>
           <p className="pause-menu-subtitle">Take a breather</p>

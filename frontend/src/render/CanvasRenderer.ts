@@ -272,41 +272,78 @@ export class CanvasRenderer {
     ctx.fillStyle = glow;
     ctx.fillRect(x - radius * 3, y - radius * 3, radius * 6, radius * 6);
 
-    // Base circle
+    const baseColor = hpRatio > 0.25 ? COLORS.baseStroke : COLORS.danger;
+
+    // Draw Hexagon Foundation instead of circle
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i - Math.PI / 2;
+      const px = x + Math.cos(angle) * radius;
+      const py = y + Math.sin(angle) * radius;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
     ctx.fillStyle = COLORS.baseFill;
     ctx.fill();
-    ctx.strokeStyle = hpRatio > 0.25 ? COLORS.baseStroke : COLORS.danger;
+    ctx.strokeStyle = baseColor;
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // HP arc
+    // HP Hexagon arc
     if (hp < maxHp) {
-      const hpAngle = (hp / maxHp) * Math.PI * 2;
       ctx.beginPath();
-      ctx.arc(x, y, radius + 6, -Math.PI / 2, -Math.PI / 2 + hpAngle);
+      // Calculate how many segments to draw based on hpRatio
+      const segments = hpRatio * 6;
+      for (let i = 0; i <= Math.floor(segments); i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 2;
+        const px = x + Math.cos(angle) * (radius + 8);
+        const py = y + Math.sin(angle) * (radius + 8);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      
+      // Interpolate the last partial segment
+      const remainder = segments % 1;
+      if (remainder > 0) {
+        const i = Math.floor(segments);
+        const angle1 = (Math.PI / 3) * i - Math.PI / 2;
+        const angle2 = (Math.PI / 3) * (i + 1) - Math.PI / 2;
+        
+        const px1 = x + Math.cos(angle1) * (radius + 8);
+        const py1 = y + Math.sin(angle1) * (radius + 8);
+        const px2 = x + Math.cos(angle2) * (radius + 8);
+        const py2 = y + Math.sin(angle2) * (radius + 8);
+        
+        const finalX = px1 + (px2 - px1) * remainder;
+        const finalY = py1 + (py2 - py1) * remainder;
+        ctx.lineTo(finalX, finalY);
+      }
+      
       ctx.strokeStyle = hpRatio > 0.5 ? COLORS.accent : hpRatio > 0.25 ? '#ffa502' : COLORS.danger;
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
+      ctx.lineWidth = 4;
+      ctx.lineJoin = 'miter';
       ctx.stroke();
-      ctx.lineCap = 'butt';
     }
 
-    // Center diamond/icon
+    // Center Tower Icon (using the same path as the logo)
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(Math.PI / 4);
+    // Scale the 24x24 icon to fit the foundation nicely
+    const iconScale = (radius * 1.5) / 24; 
+    ctx.scale(iconScale, iconScale);
+    ctx.translate(-12, -12); // Center the path
+
+    const p = new Path2D("M2 22H22V18H18V8H20V2H16V6H14V2H10V6H8V2H4V8H6V18H2V22ZM9 10H15V12H13V16H11V12H9V10Z");
     ctx.fillStyle = hpRatio > 0.25 ? COLORS.accent : COLORS.danger;
-    ctx.globalAlpha = 0.8;
-    ctx.fillRect(-8, -8, 16, 16);
+    ctx.fill(p);
     ctx.restore();
 
     // HP text
     ctx.font = FONT.ui;
     ctx.fillStyle = COLORS.textSecondary;
     ctx.textAlign = 'center';
-    ctx.fillText(`${hp}/${maxHp}`, x, y + radius + 24);
+    ctx.fillText(`${hp}/${maxHp}`, x, y + radius + 28);
   }
 
   private drawWord(word: WordEntity): void {
