@@ -29,6 +29,7 @@ let LeaderboardService = class LeaderboardService {
         const topSessions = await this.prisma.gameSession.findMany({
             where: dateFilter,
             orderBy,
+            distinct: ['userId'],
             take: limit,
             include: {
                 user: { select: { username: true } },
