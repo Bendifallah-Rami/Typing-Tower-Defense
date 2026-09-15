@@ -16,9 +16,9 @@
   flex: 1;
   min-height: 0;
   width: 100%;
-  max-width: 1040px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: clamp(18px, 3.4vh, 40px) clamp(20px, 4vw, 40px);
+  padding: clamp(18px, 3.4vh, 40px) 24px;
   display: flex;
   flex-direction: column;
   gap: clamp(14px, 2.6vh, 28px);
@@ -85,7 +85,7 @@
   min-height: 0;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.015);
+  background: var(--color-bg-surface-solid);
   padding: clamp(14px, 2.2vh, 22px) clamp(16px, 1.6vw, 22px);
   display: flex;
   flex-direction: column;
@@ -264,7 +264,7 @@
   gap: 6px;
   padding: 5px 9px 7px;
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-bg-surface-solid);
   overflow: hidden;
 }
 
