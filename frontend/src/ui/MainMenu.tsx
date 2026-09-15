@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon, Star } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
 /*  Hero demo config                                                    */
@@ -728,6 +728,15 @@ export default function MainMenu() {
                 <button onClick={() => navigate('/dashboard')} className="ttd-btn-sec">
                   Your stats
                 </button>
+                <a 
+                  href="https://github.com/Bendifallah-Rami/Typing-Tower-Defense" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="ttd-btn-sec" 
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+                >
+                  <Star size={16} /> Star on GitHub
+                </a>
               </div>
             </div>
           </div>
